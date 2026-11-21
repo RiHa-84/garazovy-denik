@@ -387,8 +387,9 @@ const WARM = {
 };
 function rampSets(w, plan){
   return plan.map(([pct, reps]) => {
-    const kg = pct === 0 ? 20 : Math.max(20, round(w * pct, 2.5));
-    return `${fmt(kg)} × ${reps}`;
+    if (pct === 0) return `osa × ${reps}`;
+    const kg = round(w * pct, 2.5);
+    return kg <= 0 ? `osa × ${reps}` : `${fmt(kg)} × ${reps}`;
   }).filter((v, i, a) => a.indexOf(v) === i).join(' · ');
 }
 function warmCard(){
@@ -407,7 +408,7 @@ function warmCard(){
     ${open ? `<ul class="nextlist">${rows.map(([n, r], i) => `<li><span>${i + 1}. ${n}</span><span class="hold">${r}</span></li>`).join('')}</ul>
     <div class="sublabel">Nájezd ${tpl === 'A' ? 'dřep' : 'mrtvý tah'}: ${ramp1}</div>
     <div class="sublabel">Nájezd ${tpl === 'A' ? 'bench' : 'military'} (až před tímto cvikem): ${ramp2}</div>
-    <div class="cue">Nájezdové série se nezapisují a nemají unavit. Pauza mezi nimi jen na přeložení kotoučů.</div>
+    <div class="cue">Váhy jsou jen kotouče, bez osy. Nájezdové série se nezapisují a nemají unavit. Pauza mezi nimi jen na přeložení kotoučů.</div>
     <button class="secondary" data-act="warmdone">Rozcvičeno</button>`
     : `<div class="row"><span class="sub">Hotovo.</span><button class="linkbtn" data-act="warmdone">Zobrazit znovu</button></div>`}</section>`;
 }
