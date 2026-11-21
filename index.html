@@ -379,6 +379,39 @@ function reviewCard(){
     <p class="sub">Pošli tahle čísla do chatu a vyhodnotíme, jestli něco měnit. Pak začni další blok.</p>
     <button class="secondary" data-act="newblock">Začít další blok</button></section>`;
 }
+
+/* ---------- Rozcvička ---------- */
+const WARM = {
+  common:[['KB halo 16 kg','6–8 na stranu'],['KB osmičky kolem nohou','8 na stranu'],['Goblet dřep 16 kg, výdrž dole 2 s','8'],['KB mrtvý tah 16 kg','10']],
+  A:[['Prázdná osa: dřep','8'],['Prázdná osa: tlak nad hlavu','8'],['Kliky','8–10']],
+  B:[['Prázdná osa: good morning','8'],['Prázdná osa: tlak nad hlavu','8'],['Zadní ramena vleže bez zátěže','10']]
+};
+function rampSets(w, plan){
+  return plan.map(([pct, reps]) => {
+    const kg = pct === 0 ? 20 : Math.max(20, round(w * pct, 2.5));
+    return `${fmt(kg)} × ${reps}`;
+  }).filter((v, i, a) => a.indexOf(v) === i).join(' · ');
+}
+function warmCard(){
+  const tpl = draft.tpl;
+  const first = tpl === 'A' ? 'squat' : 'dl';
+  const fw = num(draft.items[first].w) ?? S.prog[first].w;
+  const ramp1 = tpl === 'A'
+    ? rampSets(fw, [[0,8],[0.5,5],[0.7,3],[0.85,2]])
+    : rampSets(fw, [[0.4,5],[0.6,3],[0.75,2],[0.9,1]]);
+  const b = tpl === 'A' ? 'benchA' : 'ohpB';
+  const bw = num(draft.items[b].w) ?? S.prog[b].w;
+  const ramp2 = rampSets(bw, [[0,10],[0.6,5],[0.8,3]]);
+  const rows = [...WARM.common, ...WARM[tpl]];
+  const open = !draft.warmDone;
+  return `<section class="card"><div class="card-h"><h2>Rozcvička</h2><span class="tag">7–8 min</span></div>
+    ${open ? `<ul class="nextlist">${rows.map(([n, r]) => `<li><span>${n}</span><span class="hold">${r}</span></li>`).join('')}</ul>
+    <div class="sublabel">Nájezd ${tpl === 'A' ? 'dřep' : 'mrtvý tah'}: ${ramp1}</div>
+    <div class="sublabel">Nájezd ${tpl === 'A' ? 'bench' : 'military'}: ${ramp2}</div>
+    <div class="cue">Nájezdové série se nezapisují a nemají unavit. Pauza mezi nimi jen na přeložení kotoučů.</div>
+    <button class="secondary" data-act="warmdone">Rozcvičeno</button>`
+    : `<div class="row"><span class="sub">Hotovo.</span><button class="linkbtn" data-act="warmdone">Zobrazit znovu</button></div>`}</section>`;
+}
 /* ---------- Render: Dnes ---------- */
 function rxLabel(k){
   const def = EX[k], p = S.prog[k];
@@ -398,6 +431,7 @@ function renderToday(){
   }
   h += reminders();
   for (const w of warnings()) h += `<div class="alert ${w.cls}">${w.html}</div>`;
+  h += warmCard();
   for (const k of TPL[tpl].keys) h += exCard(k);
   const r = draft.ready;
   h += `<section class="card"><div class="card-h"><h2>Jak ses cítil</h2><span class="tag">10 s</span></div>
@@ -596,6 +630,7 @@ document.addEventListener('click', async e => {
   }
   else if (act === 'gotelo') { tab = 'telo'; render(); window.scrollTo({ top: 0 }); }
   else if (act === 'newblock') { S.start = today(); render(); try { await saveState(); toast('Nový blok začíná dnes.'); } catch(err) { failSave(err); } }
+  else if (act === 'warmdone') { draft.warmDone = !draft.warmDone; persistDraft(); render(); }
   else if (act === 'closeres') { lastResult = null; render(); }
   else if (act === 'resetdraft') { draft = newDraft(S.next); lsDel('gd_draft'); render(); toast('Záznam zahozen.'); }
   else if (act === 'save') { if (!loaded) { toast('Ještě se načítají data, chvilku.'); return; } saveWorkout(); }
