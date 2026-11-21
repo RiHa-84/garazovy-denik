@@ -382,9 +382,8 @@ function reviewCard(){
 
 /* ---------- Rozcvička ---------- */
 const WARM = {
-  common:[['KB halo 16 kg','6–8 na stranu'],['KB osmičky kolem nohou','8 na stranu'],['Goblet dřep 16 kg, výdrž dole 2 s','8'],['KB mrtvý tah 16 kg','10']],
-  A:[['Prázdná osa: dřep','8'],['Prázdná osa: tlak nad hlavu','8'],['Kliky','8–10']],
-  B:[['Prázdná osa: good morning','8'],['Prázdná osa: tlak nad hlavu','8'],['Zadní ramena vleže bez zátěže','10']]
+  A:[['KB halo 16 kg','6–8 na stranu'],['KB osmičky kolem nohou','8 na stranu'],['Kliky','8–10'],['Prázdná osa: tlak nad hlavu','8'],['KB mrtvý tah 16 kg','10'],['Goblet dřep 16 kg, výdrž dole 2 s','8'],['Prázdná osa: dřep','8']],
+  B:[['KB halo 16 kg','6–8 na stranu'],['KB osmičky kolem nohou','8 na stranu'],['Zadní ramena vleže bez zátěže','10'],['Prázdná osa: tlak nad hlavu','8'],['Goblet dřep 16 kg, výdrž dole 2 s','8'],['KB mrtvý tah 16 kg','10'],['Prázdná osa: good morning','8']]
 };
 function rampSets(w, plan){
   return plan.map(([pct, reps]) => {
@@ -402,12 +401,12 @@ function warmCard(){
   const b = tpl === 'A' ? 'benchA' : 'ohpB';
   const bw = num(draft.items[b].w) ?? S.prog[b].w;
   const ramp2 = rampSets(bw, [[0,10],[0.6,5],[0.8,3]]);
-  const rows = [...WARM.common, ...WARM[tpl]];
+  const rows = WARM[tpl];
   const open = !draft.warmDone;
   return `<section class="card"><div class="card-h"><h2>Rozcvička</h2><span class="tag">7–8 min</span></div>
-    ${open ? `<ul class="nextlist">${rows.map(([n, r]) => `<li><span>${n}</span><span class="hold">${r}</span></li>`).join('')}</ul>
+    ${open ? `<ul class="nextlist">${rows.map(([n, r], i) => `<li><span>${i + 1}. ${n}</span><span class="hold">${r}</span></li>`).join('')}</ul>
     <div class="sublabel">Nájezd ${tpl === 'A' ? 'dřep' : 'mrtvý tah'}: ${ramp1}</div>
-    <div class="sublabel">Nájezd ${tpl === 'A' ? 'bench' : 'military'}: ${ramp2}</div>
+    <div class="sublabel">Nájezd ${tpl === 'A' ? 'bench' : 'military'} (až před tímto cvikem): ${ramp2}</div>
     <div class="cue">Nájezdové série se nezapisují a nemají unavit. Pauza mezi nimi jen na přeložení kotoučů.</div>
     <button class="secondary" data-act="warmdone">Rozcvičeno</button>`
     : `<div class="row"><span class="sub">Hotovo.</span><button class="linkbtn" data-act="warmdone">Zobrazit znovu</button></div>`}</section>`;
