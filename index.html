@@ -1,0 +1,691 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Deník">
+<meta name="theme-color" content="#eef0ec" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#111416" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACZ0lEQVR4Xu3dTU7CQACAUTDu9U6aeGVNPJRHcNHEsNCkX39kCu+tGdOOwzeFgp7fX55O8JsH08JfLA4sDjrlQDnolAPloFMOlINOOVAOOuVAOeiUA+WgUw6Ug045UA465UA56JQD5aBTDpSDTjlQDjrlQDnolAPloFMOlINOOVAOOuVAOeiUA+WgUw6Ug045UA465UA56B77kB29fX7N/+kfr8/zH3xdBz2v8yD/UiNN36XBl8ihz8s1B2Nfcyx+ep1Oq8bu7ejnpRyMXQ7GpBwoB51yoBx0yoFy0CkHykG35V3Zme8WD36rbGT/PMPbLI6ZBz2ZHmyJJFeZYdcc7HnNkRb1j2Wj7tOyuVo26pJysGc5uFXKgXLQKQfKQaccKAedcqAcdMqBctApB8pBpxwoB51yoBx0yoFy0G3z1YTrWv9JWn5lW8G2QqccKAedcqAcdMqBctApB8pBpxwoB90t3Hgb9s+LHf2OoG0F2wqdcqAcdMqBctApB8pBpxwoB51yoBx0yoFy0CkHykGnHCgHnXKgHHQblGPZ53uXjbpPy+Zq2ahLGywObtU2X02YFunMT+KvX9F36CozvM3imPit7+2fZ9i2glcrdMqBctApB8pBpxwoB51yoBx0Q5RjzbvCa8bubc2xrRm7lSEWB2M6v788jXNkM+/rTkZ4bs100PMaa3EwFNsKXq3QKQfKQaccKAedcqAcdMqBctApB8pBpxwoB51yoBx0yoFy0CkHykGnHCgHnXKgHHTKgXLQKQfKQaccKAedcqAcdMqBctApB8pBpxwoB51yoBx0yoFy0CkHykH3DVQBTqjlNWk/AAAAAElFTkSuQmCC">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAACZ0lEQVR4Xu3dTU7CQACAUTDu9U6aeGVNPJRHcNHEsNCkX39kCu+tGdOOwzeFgp7fX55O8JsH08JfLA4sDjrlQDnolAPloFMOlINOOVAOOuVAOeiUA+WgUw6Ug045UA465UA56JQD5aBTDpSDTjlQDjrlQDnolAPloFMOlINOOVAOOuVAOeiUA+WgUw6Ug045UA465UA56B77kB29fX7N/+kfr8/zH3xdBz2v8yD/UiNN36XBl8ihz8s1B2Nfcyx+ep1Oq8bu7ejnpRyMXQ7GpBwoB51yoBx0yoFy0CkHykG35V3Zme8WD36rbGT/PMPbLI6ZBz2ZHmyJJFeZYdcc7HnNkRb1j2Wj7tOyuVo26pJysGc5uFXKgXLQKQfKQaccKAedcqAcdMqBctApB8pBpxwoB51yoBx0yoFy0G3z1YTrWv9JWn5lW8G2QqccKAedcqAcdMqBctApB8pBpxwoB90t3Hgb9s+LHf2OoG0F2wqdcqAcdMqBctApB8pBpxwoB51yoBx0yoFy0CkHykGnHCgHnXKgHHQblGPZ53uXjbpPy+Zq2ahLGywObtU2X02YFunMT+KvX9F36CozvM3imPit7+2fZ9i2glcrdMqBctApB8pBpxwoB51yoBx0Q5RjzbvCa8bubc2xrRm7lSEWB2M6v788jXNkM+/rTkZ4bs100PMaa3EwFNsKXq3QKQfKQaccKAedcqAcdMqBctApB8pBpxwoB51yoBx0yoFy0CkHykGnHCgHnXKgHHTKgXLQKQfKQaccKAedcqAcdMqBctApB8pBpxwoB51yoBx0yoFy0CkHykH3DVQBTqjlNWk/AAAAAElFTkSuQmCC">
+<title>Garážový deník</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: jedna sloupcová mobilní aplikace — sticky hlavička se záložkami, karty cviků pod sebou, dole lišta s pauzou. */
+:root{
+  --bg:#eef0ec; --surface:#ffffff; --ink:#15191c; --muted:#59626a; --line:#d6dbd4;
+  --chip:#e6e9e3; --accent:#b8430f; --accent-ink:#ffffff; --good:#16723a; --warn:#a15c06; --bad:#b42318;
+  --display:'Barlow Condensed','Arial Narrow',Arial,sans-serif;
+  --body:'Barlow',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --r:10px;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --bg:#111416; --surface:#1a1e21; --ink:#e8ebed; --muted:#98a2aa; --line:#2b3136;
+  --chip:#242a2e; --accent:#f07a3a; --accent-ink:#141618; --good:#4cc27a; --warn:#f0b13c; --bad:#f2786c; color-scheme:dark } }
+:root[data-theme="dark"]{
+  --bg:#111416; --surface:#1a1e21; --ink:#e8ebed; --muted:#98a2aa; --line:#2b3136;
+  --chip:#242a2e; --accent:#f07a3a; --accent-ink:#141618; --good:#4cc27a; --warn:#f0b13c; --bad:#f2786c; color-scheme:dark }
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+:root{padding-block:env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px)}
+body{margin:0}
+[hidden]{display:none!important}
+label.secondary{cursor:pointer;display:inline-block}
+.bells{display:inline-flex;gap:2px}
+.bells button{border:0;background:none;padding:4px 3px;cursor:pointer;color:var(--line);line-height:0}
+.bells button.on{color:var(--accent)}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 96px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.wrap{max-width:640px;margin:0 auto}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:14px 8px;display:grid;gap:10px}
+.brand{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h1{font-family:var(--display);font-weight:700;font-size:1.7rem;letter-spacing:.01em;margin:0;text-transform:uppercase}
+.status{font-size:.78rem;color:var(--muted)}
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--chip);border-radius:var(--r);padding:4px}
+.tabs button{font:600 .95rem var(--body);border:0;border-radius:7px;padding:9px 4px;background:transparent;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.12)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+main{display:grid;gap:14px;padding-top:6px}
+.hero{display:grid;gap:4px}
+.eyebrow{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.big{font-family:var(--display);font-weight:700;font-size:2.4rem;line-height:1;margin:0;text-wrap:balance}
+.big .tpl{color:var(--accent)}
+.sub{color:var(--muted);font-size:.92rem}
+.linkbtn{border:0;background:none;color:var(--accent);font:600 .9rem var(--body);padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+.alert{border-left:4px solid var(--warn);background:var(--surface);padding:10px 12px;border-radius:0 var(--r) var(--r) 0;font-size:.92rem;display:grid;gap:6px}
+.alert.bad{border-color:var(--bad)}
+.alert b{font-weight:600}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:14px;display:grid;gap:10px;min-width:0}
+.card-h{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.card-h h2{font-family:var(--display);font-weight:700;font-size:1.3rem;margin:0;line-height:1.1;text-transform:uppercase;letter-spacing:.01em}
+.tag{font-size:.72rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);background:var(--chip);padding:3px 7px;border-radius:5px;white-space:nowrap}
+.rx{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.load{display:flex;align-items:center;gap:6px}
+.load input{width:5.2rem;font:700 1.35rem var(--display);text-align:center;padding:6px 4px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font-variant-numeric:tabular-nums}
+.unit{color:var(--muted);font-weight:600}
+.target{font-family:var(--display);font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+.stage{font-weight:600}
+.sets{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px}
+.set{display:grid;gap:3px}
+.set label{font-size:.72rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.stepper{display:grid;grid-template-columns:30px 1fr 30px;align-items:center;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:var(--bg)}
+.stepper button{border:0;background:var(--chip);color:var(--ink);font:600 1.1rem var(--body);height:40px;cursor:pointer}
+.stepper input{border:0;background:transparent;color:var(--ink);text-align:center;font:700 1.25rem var(--display);width:100%;min-width:0;font-variant-numeric:tabular-nums;-moz-appearance:textfield}
+.stepper input::-webkit-outer-spin-button,.stepper input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.set.miss .stepper{border-color:var(--warn)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between}
+.seg{display:inline-flex;background:var(--chip);border-radius:8px;padding:3px;gap:2px}
+.seg button{border:0;background:transparent;color:var(--muted);font:600 .88rem var(--body);padding:6px 10px;border-radius:6px;cursor:pointer;min-width:36px}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.seglabel{font-size:.8rem;color:var(--muted)}
+.cue{font-size:.86rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.restbtn{border:1px solid var(--line);background:var(--bg);color:var(--ink);font:600 .85rem var(--body);padding:7px 10px;border-radius:8px;cursor:pointer;white-space:nowrap}
+.sublabel{font-size:.8rem;color:var(--muted);font-weight:600}
+
+.primary{border:0;background:var(--accent);color:var(--accent-ink);font:700 1.15rem var(--display);text-transform:uppercase;letter-spacing:.04em;padding:14px;border-radius:var(--r);cursor:pointer;width:100%}
+.secondary{border:1px solid var(--line);background:var(--surface);color:var(--ink);font:600 .95rem var(--body);padding:10px 12px;border-radius:8px;cursor:pointer}
+.danger{border-color:var(--bad);color:var(--bad)}
+
+.nextlist{display:grid;gap:6px;margin:0;padding:0;list-style:none}
+.nextlist li{display:flex;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line);padding-bottom:6px;font-variant-numeric:tabular-nums}
+.nextlist li:last-child{border-bottom:0}
+.up{color:var(--good);font-weight:600}
+.hold{color:var(--muted)}
+
+.form{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.field{display:grid;gap:4px;min-width:0}
+.field label{font-size:.8rem;color:var(--muted);font-weight:600}
+.field input,.field select{font:500 1rem var(--body);padding:9px 10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);width:100%;min-width:0}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kpi{display:grid;gap:2px}
+.kpi .v{font-family:var(--display);font-weight:700;font-size:1.6rem;font-variant-numeric:tabular-nums;line-height:1}
+.kpi .l{font-size:.75rem;color:var(--muted)}
+.bar{height:10px;background:var(--chip);border-radius:5px;overflow:hidden}
+.bar span{display:block;height:100%;background:var(--accent)}
+.charts{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.chart svg{width:100%;height:auto;display:block}
+.chart h3{margin:0;font:700 1rem var(--display);text-transform:uppercase;letter-spacing:.02em;display:flex;justify-content:space-between}
+.chart h3 span{color:var(--accent);font-variant-numeric:tabular-nums}
+.empty{color:var(--muted);font-size:.9rem}
+.hist{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.hist li{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;padding:8px 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.hist li:last-child{border-bottom:0}
+.hist .t{font:700 1.1rem var(--display);color:var(--accent)}
+.hist .d{color:var(--muted);font-size:.8rem}
+.edit{display:grid;gap:8px}
+.edit .er{display:grid;grid-template-columns:1fr 5rem 4rem;gap:8px;align-items:center;font-size:.9rem}
+.edit .er input,.edit .er select{font:600 .95rem var(--body);padding:6px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink);width:100%;min-width:0}
+.edit .eh{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+
+.timer{position:fixed;left:0;right:0;bottom:0;z-index:20;background:var(--ink);color:var(--bg);
+  padding:10px max(16px,env(safe-area-inset-right,0px)) calc(10px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));
+  display:flex;align-items:center;justify-content:space-between;gap:12px}
+.timer .tt{font:700 1.8rem var(--display);font-variant-numeric:tabular-nums}
+.timer.done{background:var(--good);color:#fff}
+.timer button{border:1px solid currentColor;background:transparent;color:inherit;font:600 .9rem var(--body);padding:7px 12px;border-radius:8px;cursor:pointer}
+.todo{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.todo li{display:flex;justify-content:space-between;align-items:center;gap:10px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.todo li:last-child{border-bottom:0;padding-bottom:0}
+.todo .d{color:var(--muted);font-size:.82rem}
+.review{border-color:var(--good)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(80px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:8px;font-size:.9rem;z-index:30;max-width:90vw}
+@media (prefers-reduced-motion: no-preference){ .toast{transition:opacity .2s} }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="brand"><h1>Garážový deník</h1><span class="status" id="status">Načítám data…</span></div>
+    <nav class="tabs" role="tablist">
+      <button role="tab" data-tab="dnes" aria-selected="true">Dnes</button>
+      <button role="tab" data-tab="telo" aria-selected="false">Tělo a kondice</button>
+      <button role="tab" data-tab="prehled" aria-selected="false">Přehled</button>
+    </nav>
+  </header>
+  <main id="view"></main>
+</div>
+<div class="timer" id="timer" hidden><div><div class="sublabel" id="timerLabel" style="color:inherit;opacity:.8">Pauza</div><div class="tt" id="timerT">0:00</div></div><div style="display:flex;gap:8px"><button id="timerAdd">+30 s</button><button id="timerStop">Konec</button></div></div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+/* ---------- Program ---------- */
+const EX = {
+  squat:{name:'Dřep s osou',type:'bar',sets:3,min:5,max:8,inc:2.5,start:55,t0:5,rest:150,
+    cue:'Nádech do břicha a zpevnit před sestupem. Dech drž dolů i nahoru, výdech až nahoře.'},
+  benchA:{name:'Bench press',type:'bar',sets:3,min:8,max:10,inc:2.5,start:55,t0:8,rest:120,pain:true,rir2:true,tag:'šetrně k rameni',
+    cue:'Lopatky stažené, lokty asi 45° od těla, spouštět 2 s. Nádech nahoře, výdech po nejtěžším bodě. Rezerva 2 opakování; ostrá bolest v rameni = konec série.'},
+  row:{name:'Přítah osy v předklonu',type:'bar',sets:3,min:6,max:10,inc:2.5,start:55,t0:8,rest:90,
+    cue:'Nádech dole, zadrž při tahu, výdech při stisku lopatek. Trup se nehýbe, jinak je váha moc.'},
+  ohpA:{name:'Military press',type:'bar',sets:2,min:5,max:8,inc:2.5,start:37.5,t0:8,rest:90,pain:true,tag:'lehčí',
+    cue:'Zpevni hýždě a břicho, nádech dole, výdech nahoře. Opakování s pomocí nohou se nepočítá, zapiš jen čistá.'},
+  curl:{name:'EZ curl',type:'ez',sets:2,min:10,max:15,inc:1,start:14,t0:10,cap:14,rest:0,tag:'supersérie 1/2',
+    cue:'Lokty u těla. Výdech při zdvihu, nádech při spouštění 2–3 s. Hned pokračuj tricepsem.'},
+  tri:{name:'EZ francouzský tlak',type:'ez',sets:2,min:10,max:15,inc:1,start:14,t0:10,cap:14,rest:60,tag:'supersérie 2/2',
+    cue:'Nádech při spouštění, výdech při tlaku. Bolí lokty? Dělej úzké kliky a sem zapiš jejich počet.'},
+  dl:{name:'Mrtvý tah',type:'dl',sets:3,min:4,max:6,inc:2.5,start:92.5,t0:5,rest:150,pain:true,rir2:true,
+    cue:'Každé opakování znovu nastavit. Nádech do břicha a zpevnit, výdech nahoře. Zpomaluje se tempo? Nepřidávej.'},
+  ohpB:{name:'Military press',type:'bar',sets:3,min:5,max:8,inc:2.5,start:42.5,t0:6,rest:120,pain:true,
+    cue:'Zpevni hýždě a břicho, nádech dole, výdech nahoře. Opakování s pomocí nohou se nepočítá, zapiš jen čistá.'},
+  benchB:{name:'Bench press',type:'bar',sets:2,min:8,max:10,inc:2.5,start:50,t0:8,rest:90,pain:true,rir2:true,tag:'lehčí',
+    cue:'Stejná technika jako v A. Rezerva 2 opakování.'},
+  kbrow:{name:'Přítah KB o lavici',type:'stage',sets:3,min:8,max:12,t0:10,per:'ruku',rest:75,
+    stages:['KB 24 kg','KB 24 kg · spouštění 3 s','KB 24 kg · pauza 1 s nahoře'],
+    cue:'Volná ruka pevně o lavici. Výdech při tahu, nádech při spouštění.'},
+  bg:{name:'Bulharský dřep',type:'stage',sets:2,min:8,max:12,t0:10,per:'nohu',rest:75,
+    stages:['KB 16 kg goblet','KB 24 kg goblet','KB 24 kg + vesta','16 + 24 kg v rukou (střídat strany)'],
+    cue:'Nádech před sestupem, výdech při výstupu. Sestup kolmo dolů.'},
+  rear:{name:'Zadní ramena vleže',type:'stage',sets:2,min:12,max:15,rest:45,
+    stages:['Zátěže 1,5 kg','1,5 kg · výdrž 2 s nahoře','1,5 kg · spouštění 3 s'],
+    cue:'Na břiše na lavici. Pohyb jde od lopatek, výdech při zdvihu.'}
+};
+const TPL = {
+  A:{keys:['squat','benchA','row','ohpA','curl','tri'], label:'dřep · bench · přítah'},
+  B:{keys:['dl','ohpB','benchB','kbrow','bg','rear'], label:'mrtvý tah · military · záda'}
+};
+const MAIN = [['squat','Dřep'],['benchA','Bench'],['dl','Mrtvý tah'],['ohpB','Military']];
+
+/* ---------- Helpers ---------- */
+const $ = s => document.querySelector(s);
+const num = v => { const n = parseFloat(String(v).replace(',', '.')); return isFinite(n) ? n : null; };
+const fmt = n => n == null ? '–' : (Math.round(n * 10) / 10).toLocaleString('cs-CZ');
+const round = (x, step) => Math.round(x / step) * step;
+const today = () => new Date().toLocaleDateString('sv-SE');
+const dcz = d => { const [y, m, dd] = d.split('-'); return `${+dd}. ${+m}.`; };
+const clone = o => JSON.parse(JSON.stringify(o));
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function lsGet(k){ try { const v = localStorage.getItem(k); return v ? JSON.parse(v) : null; } catch(e){ return null; } }
+function lsSet(k, v){ try { localStorage.setItem(k, JSON.stringify(v)); } catch(e){} }
+function lsDel(k){ try { localStorage.removeItem(k); } catch(e){} }
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast._t); toast._t = setTimeout(() => t.hidden = true, 2600); }
+
+/* ---------- State ---------- */
+function defaultState(){
+  const prog = {};
+  for (const k in EX) prog[k] = { w: EX[k].start ?? null, t: EX[k].t0 ?? EX[k].min, stage: 0, stall: 0 };
+  return { v:1, prog, next:'A', metrics:[], cardio:[] };
+}
+function mergeState(s){
+  const d = defaultState();
+  if (!s) return d;
+  const out = { ...d, ...s, prog: { ...d.prog } };
+  for (const k in d.prog) if (s.prog && s.prog[k]) out.prog[k] = { ...d.prog[k], ...s.prog[k] };
+  out.metrics = Array.isArray(s.metrics) ? s.metrics : [];
+  out.cardio = Array.isArray(s.cardio) ? s.cardio : [];
+  return out;
+}
+let S = defaultState(), SESS = [], draft = null, tab = 'dnes', lastResult = null, loaded = false;
+
+/* ---------- Storage: account db, fallback browser ---------- */
+const store = { mode:'local', db:null, uid:null };
+let chain = Promise.resolve();
+const queue = fn => (chain = chain.then(fn, fn));
+const statePath = () => `data/users/${store.uid}/state`;
+const colPath = () => `data/users/${store.uid}`;
+
+async function initStore(){
+  try {
+    if (window.claude && window.claude.use) {
+      const [db, user] = await Promise.all([window.claude.use('db'), window.claude.use('user')]);
+      if (db && user) { const id = await user.id(); if (id) { store.db = db; store.uid = id; store.mode = 'db'; } }
+    }
+  } catch(e) {}
+}
+function withTimeout(p, ms){ return Promise.race([p, new Promise((_, r) => setTimeout(() => r({code:'timeout'}), ms))]); }
+async function loadAll(){
+  if (store.mode === 'db') {
+    const [st, q] = await withTimeout(Promise.all([
+      store.db.doc(statePath()).get(),
+      store.db.collection(colPath()).where('kind', '==', 'session').get()
+    ]), 10000);
+    S = mergeState(st.exists ? st.data() : null);
+    SESS = q.docs.map(d => d.data()).sort((a, b) => a.id < b.id ? -1 : 1);
+  } else {
+    S = mergeState(lsGet('gd_state'));
+    SESS = lsGet('gd_sessions') || [];
+  }
+}
+function saveState(){
+  if (store.mode === 'db') return queue(() => store.db.doc(statePath()).set(clone(S)));
+  lsSet('gd_state', S); return Promise.resolve();
+}
+function saveSession(s){
+  if (store.mode === 'db') return queue(() => store.db.collection(colPath()).doc(s.id).set(clone(s)));
+  lsSet('gd_sessions', SESS); return Promise.resolve();
+}
+function removeSession(s){
+  if (store.mode === 'db') return queue(() => store.db.collection(colPath()).doc(s.id).delete());
+  lsSet('gd_sessions', SESS); return Promise.resolve();
+}
+function failSave(e){ toast(e && e.code === 'quota_exceeded' ? 'Úložiště je plné. Smaž staré tréninky.' : 'Uložení se nepovedlo. Zkus to znovu.'); }
+
+/* ---------- Progression ---------- */
+function stepFor(def){ return def.type === 'ez' ? 0.5 : 2.5; }
+function backoff(w){ return round(w * 0.9, 2.5); }
+function progress(k, p, res){
+  const def = EX[k];
+  const np = { ...p };
+  if (def.pain && (res.pain || 0) >= 3) { if (res.w != null) np.w = Math.min(res.w, p.w); return { np, progressed:false, note:`bolest ${res.pain >= 5 ? '5+' : res.pain}/10, drž` }; }
+  if (def.type !== 'stage' && res.w != null) np.w = res.w;
+  const ok = res.reps.length && res.reps.every(r => r >= p.t);
+  const minRir = def.rir2 ? 2 : 1;
+  const noReserve = (def.type === 'bar' || def.type === 'dl') && (res.rir == null ? !!def.rir2 : res.rir < minRir);
+  let progressed = false, note = '', capHold = false;
+  if (ok) {
+    if (p.t < def.max) { np.t = p.t + 1; progressed = true; note = `+1 opakování`; }
+    else if (def.type === 'stage') {
+      if (p.stage < def.stages.length - 1) { np.stage = p.stage + 1; np.t = def.min; progressed = true; note = 'další stupeň'; }
+      else { note = 'strop vybavení, drž'; capHold = true; }
+    } else if (noReserve) { note = res.rir == null ? 'zadej rezervu, váhu drž' : `rezerva pod ${minRir}, váhu drž`; }
+    else if (def.cap && np.w + def.inc > def.cap) { note = 'strop EZ, zpomal spouštění'; capHold = true; }
+    else { np.w = round(np.w + def.inc, stepFor(def)); np.t = def.min; progressed = true; note = `+${fmt(def.inc)} kg`; }
+  } else note = 'stejně, dorovnej';
+  np.stall = (progressed || capHold) ? 0 : (p.stall || 0) + 1;
+  return { np, progressed, note };
+}
+
+/* ---------- Draft (rozpracovaný trénink) ---------- */
+function newDraft(tpl){
+  const items = {};
+  for (const k of TPL[tpl].keys) {
+    const p = S.prog[k], def = EX[k];
+    items[k] = { w: def.type === 'stage' ? null : p.w, reps: Array(def.sets).fill(p.t), rir: null, pain: 0 };
+  }
+  return { tpl, date: today(), items, ready:{ sleep:3, mot:3, joint:false } };
+}
+function ensureDraft(){
+  if (!draft) { const saved = lsGet('gd_draft'); draft = saved && TPL[saved.tpl] ? saved : newDraft(S.next); }
+}
+const persistDraft = () => lsSet('gd_draft', draft);
+
+/* ---------- Warnings ---------- */
+function warnings(){
+  const out = [];
+  const stalled = Object.keys(EX).filter(k => (S.prog[k].stall || 0) >= 4 && EX[k].type !== 'stage');
+  if (stalled.length) out.push({ cls:'', html:`<b>Stagnace:</b> ${stalled.map(k => EX[k].name + (k.endsWith('A') ? ' (A)' : k.endsWith('B') ? ' (B)' : '')).join(', ')} – 4 tréninky bez posunu. Zvaž deload: −10 % váhy a znovu nahoru.<div><button class="secondary" data-act="deload">Udělat deload těchto cviků</button></div>` });
+  const dkeys = draft ? TPL[draft.tpl].keys : [];
+  for (const k of dkeys.filter(k => EX[k].pain)) {
+    const hist = SESS.filter(s => s.items[k]).slice(-2);
+    const lp = hist.length ? (hist[hist.length - 1].items[k].pain || 0) : 0;
+    if (lp >= 3) {
+      const both = hist.length === 2 && hist.every(s => (s.items[k].pain || 0) >= 3);
+      const nm = EX[k].name;
+      out.push({ cls: both ? 'bad' : '', html: both
+        ? `<b>${nm}:</b> bolest dvakrát po sobě. Uber 10 % v Ruční úpravě nebo cvik na týden vynech. Když bolest neustoupí, ať se na to podívá fyzioterapeut.`
+        : `<b>${nm}:</b> minule bolest ${lp >= 5 ? '5+' : lp}/10, progrese stojí. Dnes stejná váha. Když zabolí znovu, sérii ukonči.` });
+    }
+  }
+  const last2 = SESS.slice(-2);
+  if (last2.length === 2) {
+    if (last2.every(s => s.ready && s.ready.sleep <= 2)) out.push({ cls:'bad', html:'<b>Regenerace:</b> dvakrát po sobě špatný spánek. Dnes vynech doplňky na konci a nech větší rezervu.' });
+    if (last2.every(s => s.ready && s.ready.joint)) out.push({ cls:'bad', html:'<b>Klouby:</b> dvakrát po sobě bolest. Zvaž lehčí týden a cvik, který bolí, vyměň.' });
+  }
+  return out;
+}
+
+
+/* ---------- Připomínky a vyhodnocení bloku ---------- */
+const daysSince = d => Math.floor((new Date(today()) - new Date(d)) / 864e5);
+const dny = n => n === 1 ? 'dnem' : 'dny';
+function blockLabel(){
+  if (!S.start) return '';
+  return ` · týden ${Math.min(8, Math.floor(daysSince(S.start) / 7) + 1)} z 8`;
+}
+function lastDate(field){
+  const ds = S.metrics.filter(m => m[field] != null).map(m => m.d).sort();
+  return ds[ds.length - 1];
+}
+function reminders(){
+  if (!loaded) return '';
+  const items = [];
+  const lw = lastDate('weight');
+  if (!lw || daysSince(lw) >= 7) items.push(['Zvaž se ráno nalačno', lw ? `naposledy před ${daysSince(lw)} ${dny(daysSince(lw))}` : 'zatím žádný zápis']);
+  const lp = lastDate('waist');
+  if (!lp || daysSince(lp) >= 14) items.push(['Změř pas u pupku', lp ? `naposledy před ${daysSince(lp)} ${dny(daysSince(lp))}` : 'zatím žádný zápis']);
+  const since = new Date(Date.now() - 6 * 864e5).toLocaleDateString('sv-SE');
+  const wk = S.cardio.filter(c => c.d >= since).reduce((a, c) => a + c.min, 0);
+  if (wk < 60) items.push([`Zóna 2: ${wk} z 60 min`, 'posledních 7 dní · cíl 2× 30–40 min']);
+  if (SESS.length && (!S.lastBackup || daysSince(S.lastBackup) >= 30)) items.push(['Stáhni zálohu dat', S.lastBackup ? `naposledy ${dcz(S.lastBackup)}` : 'data jsou jen v tomto telefonu', 'export', 'Stáhnout']);
+  let h = '';
+  if (S.start && daysSince(S.start) >= 56) h += reviewCard();
+  if (items.length) h += `<section class="card"><div class="card-h"><h2>Připomínky</h2></div><ul class="todo">${
+    items.map(([t, d, a = 'gotelo', bl = 'Zapsat']) => `<li><span><b>${t}</b><br><span class="d">${d}</span></span><button class="secondary" data-act="${a}">${bl}</button></li>`).join('')}</ul></section>`;
+  return h;
+}
+function reviewCard(){
+  const blk = SESS.filter(s => s.date >= S.start);
+  const rows = MAIN.map(([k, lab]) => {
+    const p = blk.filter(s => s.items[k] && s.items[k].w != null);
+    if (p.length < 2) return '';
+    const a = p[0].items[k], b = p[p.length - 1].items[k];
+    return `<li><span>${lab}</span><span>${fmt(a.w)} × ${a.reps[0]} → ${fmt(b.w)} × ${b.reps[0]}</span></li>`;
+  }).join('');
+  const from = new Date(new Date(S.start) - 7 * 864e5).toLocaleDateString('sv-SE');
+  const m = S.metrics.filter(x => x.d >= from).sort((a, b) => a.d < b.d ? -1 : 1);
+  const ch = f => { const v = m.filter(x => x[f] != null); return v.length >= 2 ? `${fmt(v[0][f])} → ${fmt(v[v.length - 1][f])}` : 'málo zápisů'; };
+  return `<section class="card review"><div class="card-h"><h2>8 týdnů hotovo</h2><span class="tag">vyhodnocení</span></div>
+    <ul class="nextlist">${rows}<li><span>Váha</span><span>${ch('weight')} kg</span></li><li><span>Pas</span><span>${ch('waist')} cm</span></li></ul>
+    <p class="sub">Pošli tahle čísla do chatu a vyhodnotíme, jestli něco měnit. Pak začni další blok.</p>
+    <button class="secondary" data-act="newblock">Začít další blok</button></section>`;
+}
+/* ---------- Render: Dnes ---------- */
+function rxLabel(k){
+  const def = EX[k], p = S.prog[k];
+  if (def.type === 'stage') return def.stages[p.stage];
+  return `${fmt(p.w)} kg`;
+}
+function renderToday(){
+  ensureDraft();
+  const tpl = draft.tpl, other = tpl === 'A' ? 'B' : 'A';
+  let h = `<section class="hero"><span class="eyebrow">${loaded ? 'Na řadě' : 'Program'}${blockLabel()}${draft.date !== today() ? ' · rozpracováno ' + dcz(draft.date) : ''}</span>
+    <p class="big">Trénink <span class="tpl">${tpl}</span></p>
+    <span class="sub">${TPL[tpl].label} · <button class="linkbtn" data-act="switch">Dnes raději ${other}</button></span></section>`;
+  if (lastResult) {
+    h += `<section class="card"><div class="card-h"><h2>Uloženo · příště</h2><span class="tag">trénink ${lastResult.tpl}</span></div><ul class="nextlist">${
+      lastResult.rows.map(r => `<li><span>${esc(r.name)}</span><span class="${r.up ? 'up' : 'hold'}">${esc(r.next)} · ${esc(r.note)}</span></li>`).join('')
+    }</ul><button class="secondary" data-act="closeres">Zavřít</button></section>`;
+  }
+  h += reminders();
+  for (const w of warnings()) h += `<div class="alert ${w.cls}">${w.html}</div>`;
+  for (const k of TPL[tpl].keys) h += exCard(k);
+  const r = draft.ready;
+  h += `<section class="card"><div class="card-h"><h2>Jak ses cítil</h2><span class="tag">10 s</span></div>
+    <p class="sub" style="margin:0">Víc činek = lepší.</p>
+    <div class="row"><span class="seglabel">Spánek</span>${bells('sleep', r.sleep)}</div>
+    <div class="row"><span class="seglabel">Chuť do tréninku</span>${bells('mot', r.mot)}</div>
+    <div class="row"><span class="seglabel">Bolest kloubů</span>${seg('joint', r.joint ? 1 : 0, [0,1], ['ne','ano'])}</div></section>
+    <button class="primary" data-act="save">Uložit trénink ${tpl}</button>
+    <button class="linkbtn" data-act="resetdraft" style="justify-self:center">Zahodit rozpracovaný záznam</button>`;
+  return h;
+}
+const DB_SVG = '<svg viewBox="0 0 28 16" width="30" height="18" aria-hidden="true"><rect x="1" y="4" width="4" height="8" rx="1" fill="currentColor"/><rect x="5" y="1" width="4" height="14" rx="1" fill="currentColor"/><rect x="9" y="6.5" width="10" height="3" fill="currentColor"/><rect x="19" y="1" width="4" height="14" rx="1" fill="currentColor"/><rect x="23" y="4" width="4" height="8" rx="1" fill="currentColor"/></svg>';
+function bells(field, val){
+  return `<span class="bells" role="group">${[1,2,3,4,5].map(i => `<button class="${i <= val ? 'on' : ''}" data-seg="${field}" data-v="${i}" aria-label="${i} z 5" aria-pressed="${i === val}">${DB_SVG}</button>`).join('')}</span>`;
+}
+function seg(field, val, opts, labels){
+  return `<span class="seg" role="group">${opts.map((o, i) => `<button data-seg="${field}" data-v="${o}" aria-pressed="${o === val}">${labels ? labels[i] : o}</button>`).join('')}</span>`;
+}
+function exCard(k){
+  const def = EX[k], p = S.prog[k], it = draft.items[k];
+  const per = def.per ? ` / ${def.per}` : '';
+  let load = '';
+  if (def.type === 'stage') load = `<span class="stage">${esc(def.stages[p.stage])}</span>`;
+  else load = `<span class="load"><input id="w-${k}" data-w="${k}" inputmode="decimal" value="${fmt(it.w)}" aria-label="Váha ${esc(def.name)} v kg"><span class="unit">kg</span></span>`;
+  const target = `<span class="target">${def.type === 'dl' ? '1 + 2' : def.sets} × ${p.t}${per}</span>`;
+  let sets = '<div class="sets">';
+  it.reps.forEach((r, i) => {
+    let lab = def.type === 'dl' ? (i === 0 ? 'Top set' : `Back-off ${i}`) : `Série ${i + 1}`;
+    sets += `<div class="set ${r < p.t ? 'miss' : ''}"><label for="r-${k}-${i}">${lab}</label><div class="stepper">
+      <button data-step="${k}" data-i="${i}" data-d="-1" aria-label="Méně">−</button>
+      <input id="r-${k}-${i}" data-rep="${k}" data-i="${i}" inputmode="numeric" value="${r}">
+      <button data-step="${k}" data-i="${i}" data-d="1" aria-label="Více">+</button></div></div>`;
+  });
+  sets += '</div>';
+  const bo = def.type === 'dl' ? `<div class="sublabel">Back-off: ${fmt(backoff(num(it.w) ?? p.w))} kg (−10 %)</div>` : '';
+  const rir = (def.type === 'bar' || def.type === 'dl')
+    ? `<div class="row"><span class="seglabel">Rezerva v poslední sérii${def.rir2 ? ' · na +váhu ≥ 2' : ''}</span>${seg('rir:' + k, it.rir, [0,1,2,3], ['0','1','2','3+'])}</div>` : '';
+  const prev = [...SESS].reverse().find(s => s.items[k]);
+  const pi = prev && prev.items[k];
+  const prevLine = pi ? `<div class="sublabel">Minule ${dcz(prev.date)}: ${pi.w != null ? fmt(pi.w) + ' kg · ' : def.type === 'stage' && pi.stage != null ? esc(def.stages[pi.stage]) + ' · ' : ''}${pi.reps.join('-')}${pi.rir != null ? ' · rezerva ' + (pi.rir >= 3 ? '3+' : pi.rir) : ''}${pi.pain ? ' · bolest ' + (pi.pain >= 5 ? '5+' : pi.pain) : ''}</div>` : '';
+  const rule = def.rir2 ? '<div class="sublabel">Pro +váhu: všechna opakování · rezerva aspoň 2 · bolest pod 3</div>' : '';
+  const painRow = def.pain ? `<div class="row"><span class="seglabel">Bolest při cviku (0–10)</span>${seg('pain:' + k, it.pain ?? 0, [0,1,2,3,4,5], ['0','1','2','3','4','5+'])}</div>` : '';
+  const rest = def.rest ? `<button class="restbtn" data-rest="${def.rest}" data-name="${esc(def.name)}">Pauza ${Math.floor(def.rest/60)}:${String(def.rest%60).padStart(2,'0')}</button>` : '';
+  const capNote = def.type === 'stage' && p.stage === def.stages.length - 1 && p.t >= def.max ? '<div class="sublabel">Strop vybavení. Drž a zpomal tempo.</div>' : '';
+  return `<section class="card"><div class="card-h"><h2>${esc(def.name)}</h2>${def.tag ? `<span class="tag">${esc(def.tag)}</span>` : ''}</div>
+    <div class="row"><div class="rx">${load}${target}</div>${rest}</div>${bo}${prevLine}${sets}${rir}${rule}${painRow}${capNote}<div class="cue">${esc(def.cue)}</div></section>`;
+}
+
+/* ---------- Render: Tělo ---------- */
+function renderBody(){
+  const m = [...S.metrics].sort((a, b) => a.d < b.d ? -1 : 1);
+  const last = m[m.length - 1], first = m[0];
+  const since = new Date(Date.now() - 6 * 864e5).toLocaleDateString('sv-SE');
+  const wk = S.cardio.filter(c => c.d >= since).reduce((s, c) => s + c.min, 0);
+  let h = `<section class="hero"><span class="eyebrow">1× týdně ráno nalačno</span><p class="big">Tělo</p></section>
+  <section class="card"><div class="kpis">
+    <div class="kpi"><span class="v">${last && last.weight != null ? fmt(last.weight) : '–'}</span><span class="l">kg${first && last && first !== last && first.weight != null && last.weight != null ? ` · ${fmtDelta(last.weight - first.weight)} od začátku` : ''}</span></div>
+    <div class="kpi"><span class="v">${last && last.waist != null ? fmt(last.waist) : '–'}</span><span class="l">pas cm${first && last && first !== last && first.waist != null && last.waist != null ? ` · ${fmtDelta(last.waist - first.waist)}` : ''}</span></div>
+    <div class="kpi"><span class="v">${wk}</span><span class="l">min zóny 2 za 7 dní</span></div></div>
+    ${m.length >= 2 ? `<div class="charts">${chart('Váha', m.map(x => x.weight), m.map(x => x.d), 'kg')}${chart('Pas', m.map(x => x.waist), m.map(x => x.d), 'cm')}</div>` : '<p class="empty">Graf se objeví po druhém zápisu.</p>'}
+  </section>
+  <section class="card"><div class="card-h"><h2>Zapsat tělo</h2></div>
+    <div class="form"><div class="field"><label for="m-d">Datum</label><input id="m-d" type="date" value="${today()}"></div>
+    <div class="field"><label for="m-w">Váha (kg)</label><input id="m-w" inputmode="decimal" placeholder="např. 88,4"></div>
+    <div class="field"><label for="m-p">Pas (cm, u pupku)</label><input id="m-p" inputmode="decimal" placeholder="každé 2 týdny"></div></div>
+    <button class="secondary" data-act="addmetric">Uložit</button></section>
+  <section class="card"><div class="card-h"><h2>Kondice</h2><span class="tag">cíl 60–80 min / 7 dní</span></div>
+    <div class="bar" aria-label="Zóna 2 za posledních 7 dní"><span style="width:${Math.min(100, wk / 80 * 100)}%"></span></div>
+    <div class="form"><div class="field"><label for="c-t">Aktivita</label><select id="c-t"><option>Veslař</option><option>Kolo</option><option>Svižná chůze</option><option>Swing EMOM</option></select></div>
+    <div class="field"><label for="c-m">Minuty</label><input id="c-m" inputmode="numeric" placeholder="např. 35"></div>
+    <div class="field"><label for="c-d">Datum</label><input id="c-d" type="date" value="${today()}"></div></div>
+    <button class="secondary" data-act="addcardio">Uložit</button>
+    ${S.cardio.length ? `<ul class="hist">${[...S.cardio].sort((a,b)=>a.d<b.d?1:-1).slice(0,6).map(c => `<li><span class="d">${dcz(c.d)}</span><span>${esc(c.type)} · ${c.emom || c.min} min</span></li>`).join('')}</ul>` : ''}
+    <p class="empty">Swing EMOM je intervalový trénink, ne zóna 2. Do cíle se nepočítá a nedávej ho hned po tréninku B.</p></section>`;
+  return h;
+}
+const fmtDelta = d => (d > 0 ? '+' : d < 0 ? '−' : '±') + fmt(Math.abs(d));
+
+/* ---------- Render: Přehled ---------- */
+function renderOverview(){
+  let h = `<section class="hero"><span class="eyebrow">${SESS.length} ${SESS.length === 1 ? 'trénink' : SESS.length >= 2 && SESS.length <= 4 ? 'tréninky' : 'tréninků'}</span><p class="big">Přehled</p></section>`;
+  h += `<section class="card"><div class="card-h"><h2>Pracovní váhy</h2></div><div class="charts">`;
+  let any = false;
+  for (const [k, lab] of MAIN) {
+    const pts = SESS.filter(s => s.items[k] && s.items[k].w != null);
+    if (pts.length >= 2) { any = true; h += chart(lab, pts.map(s => s.items[k].w), pts.map(s => s.date), 'kg'); }
+  }
+  h += `</div>${any ? '' : '<p class="empty">Grafy hlavních cviků se objeví po dvou trénincích daného typu.</p>'}</section>`;
+  h += `<section class="card"><div class="card-h"><h2>Historie</h2></div>`;
+  if (!SESS.length) h += '<p class="empty">Zatím žádný uložený trénink. Ulož první na záložce Dnes.</p>';
+  else {
+    h += `<ul class="hist">${[...SESS].reverse().slice(0, 12).map(s => `<li><span class="t">${s.tpl}</span><span><span class="d">${dcz(s.date)}</span><br>${
+      TPL[s.tpl].keys.filter(k => s.items[k]).map(k => `${esc(EX[k].name)} ${EX[k].type === 'stage' ? '' : fmt(s.items[k].w) + ' kg '}${s.items[k].reps.join('-')}`).join(' · ')}</span></li>`).join('')}</ul>
+      <button class="secondary danger" data-act="dellast">Smazat poslední trénink a vrátit progresi</button>`;
+  }
+  h += `</section><section class="card"><div class="card-h"><h2>Ruční úprava</h2><span class="tag">když nesedí start</span></div><div class="edit">
+    <div class="er eh"><span>Cvik</span><span>Váha</span><span>Cíl op.</span></div>`;
+  for (const t of ['A','B']) for (const k of TPL[t].keys) {
+    const def = EX[k], p = S.prog[k];
+    h += `<div class="er"><span>${t} · ${esc(def.name)}</span>${def.type === 'stage'
+      ? `<select id="e-s-${k}" data-es="${k}">${def.stages.map((s, i) => `<option value="${i}" ${i === p.stage ? 'selected' : ''}>${esc(s)}</option>`).join('')}</select>`
+      : `<input id="e-w-${k}" data-ew="${k}" inputmode="decimal" value="${fmt(p.w)}">`}
+      <input id="e-t-${k}" data-et="${k}" inputmode="numeric" value="${p.t}"></div>`;
+  }
+  h += `<button class="secondary" data-act="saveedit">Uložit úpravy</button></div></section>`;
+  h += `<section class="card"><div class="card-h"><h2>Záloha</h2><span class="tag">jednou měsíčně</span></div>
+    <p class="sub">Data jsou jen v tomto telefonu. Zálohu ulož do iCloudu, při výměně telefonu ji nahraješ zpět.${S.lastBackup ? ' Poslední: ' + dcz(S.lastBackup) + '.' : ''}</p>
+    <div class="row" style="justify-content:flex-start"><button class="secondary" data-act="export">Stáhnout zálohu</button><label class="secondary" for="imp">Nahrát zálohu</label><input id="imp" type="file" accept="application/json,.json" hidden></div></section>`;
+  return h;
+}
+
+/* ---------- Chart ---------- */
+function chart(title, vals, dates, unit){
+  const pts = vals.map((v, i) => ({ v, d: dates[i] })).filter(p => p.v != null);
+  if (pts.length < 2) return '';
+  const W = 300, H = 120, L = 34, R = 10, T = 10, B = 22;
+  let lo = Math.min(...pts.map(p => p.v)), hi = Math.max(...pts.map(p => p.v));
+  if (hi - lo < 2) { lo -= 1; hi += 1; }
+  const x = i => L + (W - L - R) * (i / (pts.length - 1));
+  const y = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo));
+  const line = pts.map((p, i) => `${x(i).toFixed(1)},${y(p.v).toFixed(1)}`).join(' ');
+  const area = `${L},${H - B} ${line} ${x(pts.length - 1).toFixed(1)},${H - B}`;
+  const lastP = pts[pts.length - 1];
+  return `<div class="chart"><h3>${esc(title)} <span>${fmt(lastP.v)} ${unit}</span></h3>
+  <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(title)}: od ${fmt(pts[0].v)} do ${fmt(lastP.v)} ${unit}">
+    <line x1="${L}" x2="${W - R}" y1="${y(hi)}" y2="${y(hi)}" stroke="var(--line)" stroke-dasharray="3 3"/>
+    <line x1="${L}" x2="${W - R}" y1="${y(lo)}" y2="${y(lo)}" stroke="var(--line)" stroke-dasharray="3 3"/>
+    <text x="${L - 6}" y="${y(hi) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${fmt(hi)}</text>
+    <text x="${L - 6}" y="${y(lo) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${fmt(lo)}</text>
+    <polygon points="${area}" fill="var(--accent)" fill-opacity="0.12"/>
+    <polyline points="${line}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="${x(pts.length - 1)}" cy="${y(lastP.v)}" r="4" fill="var(--accent)"/>
+    <text x="${L}" y="${H - 6}" font-size="10" fill="var(--muted)">${dcz(pts[0].d)}</text>
+    <text x="${W - R}" y="${H - 6}" font-size="10" fill="var(--muted)" text-anchor="end">${dcz(lastP.d)}</text>
+  </svg></div>`;
+}
+
+/* ---------- Render root ---------- */
+function render(){
+  document.querySelectorAll('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.tab === tab));
+  $('#view').innerHTML = tab === 'dnes' ? renderToday() : tab === 'telo' ? renderBody() : renderOverview();
+}
+function setStatus(){
+  $('#status').textContent = !loaded ? 'Načítám data…' : store.mode === 'db' ? 'Ukládá se do tvého účtu' : 'Data jsou uložená v tomto telefonu';
+}
+
+/* ---------- Actions ---------- */
+async function saveWorkout(){
+  const tpl = draft.tpl, before = clone(S.prog), rows = [];
+  const items = {};
+  for (const k of TPL[tpl].keys) {
+    const def = EX[k], it = draft.items[k], p = S.prog[k];
+    const w = def.type === 'stage' ? null : num(it.w);
+    const res = { w, reps: it.reps.map(r => Math.max(0, num(r) ?? 0)), rir: it.rir, pain: it.pain || 0 };
+    const { np, progressed, note } = progress(k, p, res);
+    S.prog[k] = np;
+    items[k] = { w: def.type === 'stage' ? null : res.w, stage: def.type === 'stage' ? p.stage : null, reps: res.reps, rir: res.rir, pain: res.pain };
+    const nextTxt = def.type === 'stage' ? `${def.stages[np.stage]} · ${def.sets}×${np.t}` : `${fmt(np.w)} kg · ${def.type === 'dl' ? '1+2' : def.sets}×${np.t}`;
+    rows.push({ name: def.name + (k === 'ohpA' || k === 'benchB' ? ' (lehčí)' : ''), next: nextTxt, note, up: progressed });
+  }
+  const sess = { kind:'session', id: 's' + Date.now(), date: draft.date, tpl, items, ready: { ...draft.ready }, before };
+  SESS.push(sess);
+  if (!S.start) S.start = draft.date;
+  S.next = tpl === 'A' ? 'B' : 'A';
+  lastResult = { tpl: S.next, rows };
+  draft = newDraft(S.next); lsDel('gd_draft');
+  render(); window.scrollTo({ top: 0 });
+  try { await saveSession(sess); await saveState(); toast(`Uloženo. Příště trénink ${S.next}.`); } catch(e) { failSave(e); }
+}
+
+document.addEventListener('click', async e => {
+  const b = e.target.closest('button'); if (!b) return;
+  if (b.dataset.tab) { tab = b.dataset.tab; render(); return; }
+  if (b.dataset.step) {
+    const k = b.dataset.step, i = +b.dataset.i, it = draft.items[k];
+    it.reps[i] = Math.max(0, (num(it.reps[i]) ?? 0) + +b.dataset.d);
+    persistDraft(); render(); return;
+  }
+  if (b.dataset.seg) {
+    const f = b.dataset.seg, v = +b.dataset.v;
+    if (f.startsWith('rir:')) { const it = draft.items[f.slice(4)]; it.rir = it.rir === v ? null : v; }
+    else if (f.startsWith('pain:')) { draft.items[f.slice(5)].pain = v; }
+    else if (f === 'joint') draft.ready.joint = v === 1;
+    else draft.ready[f] = v;
+    persistDraft(); render(); return;
+  }
+  if (b.dataset.rest) { startTimer(+b.dataset.rest, b.dataset.name); return; }
+  const act = b.dataset.act;
+  if (act === 'switch') { const t = draft.tpl === 'A' ? 'B' : 'A'; draft = newDraft(t); persistDraft(); render(); }
+  else if (act === 'export') {
+    S.lastBackup = today(); await saveState();
+    const blob = new Blob([JSON.stringify({ app:'garazovy-denik', v:1, S, SESS }, null, 1)], { type:'application/json' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `garazovy-denik-${today()}.json`;
+    document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 5000);
+    render(); toast('Záloha stažená. Ulož ji do iCloudu.');
+  }
+  else if (act === 'gotelo') { tab = 'telo'; render(); window.scrollTo({ top: 0 }); }
+  else if (act === 'newblock') { S.start = today(); render(); try { await saveState(); toast('Nový blok začíná dnes.'); } catch(err) { failSave(err); } }
+  else if (act === 'closeres') { lastResult = null; render(); }
+  else if (act === 'resetdraft') { draft = newDraft(S.next); lsDel('gd_draft'); render(); toast('Záznam zahozen.'); }
+  else if (act === 'save') { if (!loaded) { toast('Ještě se načítají data, chvilku.'); return; } saveWorkout(); }
+  else if (act === 'deload') {
+    for (const k in EX) { const p = S.prog[k]; if ((p.stall || 0) >= 4 && EX[k].type !== 'stage') { p.w = round(p.w * 0.9, stepFor(EX[k])); p.t = EX[k].min; p.stall = 0; } }
+    draft = newDraft(draft.tpl); persistDraft(); render();
+    try { await saveState(); toast('Deload nastaven: −10 %, zpět na spodní opakování.'); } catch(err) { failSave(err); }
+  }
+  else if (act === 'addmetric') {
+    const w = num($('#m-w').value), p = num($('#m-p').value), d = $('#m-d').value || today();
+    if (w == null && p == null) { toast('Zadej váhu nebo pas.'); return; }
+    S.metrics = S.metrics.filter(x => x.d !== d); S.metrics.push({ d, weight: w, waist: p });
+    render(); try { await saveState(); toast('Uloženo.'); } catch(err) { failSave(err); }
+  }
+  else if (act === 'addcardio') {
+    const m = num($('#c-m').value), t = $('#c-t').value, d = $('#c-d').value || today();
+    if (!m) { toast('Zadej minuty.'); return; }
+    if (t === 'Swing EMOM') { S.cardio.push({ d, type: t, min: 0, emom: Math.round(m) }); }
+    else S.cardio.push({ d, type: t, min: Math.round(m) });
+    if (S.cardio.length > 300) S.cardio = S.cardio.slice(-300);
+    render(); try { await saveState(); toast('Uloženo.'); } catch(err) { failSave(err); }
+  }
+  else if (act === 'dellast') {
+    if (b.dataset.confirm !== '1') { b.dataset.confirm = '1'; b.textContent = 'Opravdu smazat? Klepni znovu'; return; }
+    const last = SESS.pop(); if (!last) return;
+    S.prog = mergeState({ prog: last.before }).prog; S.next = last.tpl;
+    draft = newDraft(S.next); lsDel('gd_draft'); lastResult = null; render();
+    try { await removeSession(last); await saveState(); toast('Smazáno, progrese vrácena.'); } catch(err) { failSave(err); }
+  }
+  else if (act === 'saveedit') {
+    for (const k in EX) {
+      const def = EX[k], p = S.prog[k];
+      const t = num(($('#e-t-' + k) || {}).value); if (t) p.t = Math.max(1, Math.round(t));
+      if (def.type === 'stage') { const s = $('#e-s-' + k); if (s) p.stage = +s.value; }
+      else { const w = num(($('#e-w-' + k) || {}).value); if (w != null) p.w = w; }
+      p.stall = 0;
+    }
+    draft = newDraft(draft.tpl); persistDraft(); render();
+    try { await saveState(); toast('Úpravy uloženy.'); } catch(err) { failSave(err); }
+  }
+});
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.id === 'imp' && el.files && el.files[0]) {
+    const fr = new FileReader();
+    fr.onload = async () => {
+      try {
+        const o = JSON.parse(fr.result);
+        if (o.app !== 'garazovy-denik' || !o.S || !Array.isArray(o.SESS)) throw 0;
+        S = mergeState(o.S); SESS = o.SESS; draft = newDraft(S.next); lsDel('gd_draft');
+        lsSet('gd_sessions', SESS); await saveState(); render(); toast(`Nahráno: ${SESS.length} tréninků.`);
+      } catch(err) { toast('Tohle není záloha Garážového deníku.'); }
+    };
+    fr.readAsText(el.files[0]); return;
+  }
+  if (el.dataset.w) { draft.items[el.dataset.w].w = num(el.value); persistDraft(); render(); }
+  if (el.dataset.rep) { draft.items[el.dataset.rep].reps[+el.dataset.i] = Math.max(0, Math.round(num(el.value) ?? 0)); persistDraft(); render(); }
+});
+
+/* ---------- Timer ---------- */
+let tEnd = 0, tInt = null;
+function startTimer(sec, name){
+  tEnd = Date.now() + sec * 1000; $('#timerLabel').textContent = 'Pauza · ' + name;
+  $('#timer').hidden = false; $('#timer').classList.remove('done');
+  clearInterval(tInt); tick(); tInt = setInterval(tick, 250);
+}
+function tick(){
+  const s = Math.max(0, Math.ceil((tEnd - Date.now()) / 1000));
+  $('#timerT').textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+  if (s === 0 && !$('#timer').classList.contains('done')) {
+    $('#timer').classList.add('done'); $('#timerT').textContent = 'Jdi na to';
+    try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch(e) {}
+    clearInterval(tInt);
+  }
+}
+$('#timerAdd').addEventListener('click', () => { tEnd = Math.max(tEnd, Date.now()) + 30000; $('#timer').classList.remove('done'); clearInterval(tInt); tick(); tInt = setInterval(tick, 250); });
+$('#timerStop').addEventListener('click', () => { clearInterval(tInt); $('#timer').hidden = true; });
+
+/* ---------- Boot ---------- */
+render(); setStatus();
+(async () => {
+  await initStore();
+  try { await loadAll(); }
+  catch(e) {
+    if (store.mode === 'db') { toast('Účet teď neodpovídá, ukládám dočasně do prohlížeče.'); store.mode = 'local'; S = mergeState(lsGet('gd_state')); SESS = lsGet('gd_sessions') || []; }
+  }
+  loaded = true;
+  const saved = lsGet('gd_draft');
+  draft = saved && TPL[saved.tpl] && saved.date === today() ? saved : newDraft(S.next);
+  setStatus(); render();
+})();
+</script>
+</body>
+</html>
