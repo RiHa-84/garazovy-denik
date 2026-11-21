@@ -191,8 +191,8 @@ const EX = {
     cue:'Na břiše na lavici. Pohyb jde od lopatek, výdech při zdvihu.'}
 };
 const TPL = {
-  A:{keys:['squat','benchA','row','ohpA','curl','tri'], label:'dřep · bench · přítah'},
-  B:{keys:['dl','ohpB','benchB','kbrow','bg','rear'], label:'mrtvý tah · military · záda'}
+  A:{keys:['squat','benchA','row','curl','tri'], label:'dřep · bench · přítah'},
+  B:{keys:['dl','ohpB','benchB','kbrow','bg'], label:'mrtvý tah · military · záda'}
 };
 const MAIN = [['squat','Dřep'],['benchA','Bench'],['dl','Mrtvý tah'],['ohpB','Military']];
 
@@ -300,7 +300,7 @@ function newDraft(tpl){
   const items = {};
   for (const k of TPL[tpl].keys) {
     const p = S.prog[k], def = EX[k];
-    items[k] = { w: def.type === 'stage' ? null : p.w, reps: Array(def.sets).fill(p.t), rir: null, pain: 0 };
+    items[k] = { w: def.type === 'stage' ? null : p.w, reps: Array(def.sets).fill(p.t), rir: (def.type === 'bar' || def.type === 'dl') ? 2 : null, pain: 0 };
   }
   return { tpl, date: today(), items, ready:{ sleep:3, mot:3, joint:false } };
 }
@@ -382,8 +382,8 @@ function reviewCard(){
 
 /* ---------- Rozcvička ---------- */
 const WARM = {
-  A:[['KB halo 16 kg','6–8 na stranu'],['KB osmičky kolem nohou','8 na stranu'],['Kliky','8–10'],['Prázdná osa: tlak nad hlavu','8'],['KB mrtvý tah 16 kg','10'],['Goblet dřep 16 kg, výdrž dole 2 s','8']],
-  B:[['KB halo 16 kg','6–8 na stranu'],['KB osmičky kolem nohou','8 na stranu'],['Zadní ramena vleže bez zátěže','10'],['Prázdná osa: tlak nad hlavu','8'],['Goblet dřep 16 kg, výdrž dole 2 s','8'],['KB mrtvý tah 16 kg','10'],['Prázdná osa: good morning','8']]
+  A:[['KB halo 16 kg','8 na stranu'],['KB osmičky kolem nohou','8 na stranu'],['Kliky','10'],['KB mrtvý tah 16 kg','10'],['Goblet dřep 16 kg, výdrž dole 2 s','8']],
+  B:[['KB halo 16 kg','8 na stranu'],['KB osmičky kolem nohou','8 na stranu'],['Zadní ramena vleže na lavici, 1,5 kg','2 × 12'],['Goblet dřep 16 kg, výdrž dole 2 s','8'],['KB mrtvý tah 16 kg','10'],['Good morning s prázdnou osou','8']]
 };
 function rampSets(w, plan){
   return plan.map(([pct, reps]) => {
@@ -404,7 +404,7 @@ function warmCard(){
   const ramp2 = rampSets(bw, [[0,10],[0.6,5],[0.8,3]]);
   const rows = WARM[tpl];
   const open = !draft.warmDone;
-  return `<section class="card"><div class="card-h"><h2>Rozcvička</h2><span class="tag">7–8 min</span></div>
+  return `<section class="card"><div class="card-h"><h2>Rozcvička</h2><span class="tag">6–7 min · nezapisuje se</span></div>
     ${open ? `<ul class="nextlist">${rows.map(([n, r], i) => `<li><span>${i + 1}. ${n}</span><span class="hold">${r}</span></li>`).join('')}</ul>
     <div class="sublabel">Nájezd ${tpl === 'A' ? 'dřep' : 'mrtvý tah'}: ${ramp1}</div>
     <div class="sublabel">Nájezd ${tpl === 'A' ? 'bench' : 'military'} (až před tímto cvikem): ${ramp2}</div>
@@ -431,6 +431,7 @@ function renderToday(){
   }
   h += reminders();
   for (const w of warnings()) h += `<div class="alert ${w.cls}">${w.html}</div>`;
+  h += `<div class="alert" style="border-color:var(--accent)">Vše je předvyplněné jako splněné. Přepiš jen to, co nevyšlo, a dej <b>Uložit</b>.</div>`;
   h += warmCard();
   for (const k of TPL[tpl].keys) h += exCard(k);
   const r = draft.ready;
