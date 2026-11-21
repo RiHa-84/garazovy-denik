@@ -161,7 +161,7 @@ main{display:grid;gap:14px;padding-top:6px}
 <script>
 /* ---------- Program ---------- */
 const EX = {
-  squat:{name:'Dřep s osou',type:'bar',sets:3,min:5,max:8,inc:2.5,start:55,t0:5,rest:150,
+  squat:{name:'Dřep s osou',extra:'Lýtka po každé sérii, než odložíš osu: výpony špičkami na kotouči, 10–12×, dole 2 s protažení, nahoře 1 s. Kymácíš se? Po dřepu jednonož na schodu s KB 24 kg, 2–3 × 10–15 na nohu.',type:'bar',sets:3,min:5,max:8,inc:2.5,start:55,t0:5,rest:150,
     cue:'Nádech do břicha a zpevnit před sestupem. Dech drž dolů i nahoru, výdech až nahoře.'},
   benchA:{name:'Bench press',type:'bar',sets:3,min:8,max:10,inc:2.5,start:55,t0:8,rest:120,pain:true,rir2:true,tag:'šetrně k rameni',
     cue:'Lopatky stažené, lokty asi 45° od těla, spouštět 2 s. Nádech nahoře, výdech po nejtěžším bodě. Rezerva 2 opakování; ostrá bolest v rameni = konec série.'},
@@ -443,7 +443,7 @@ function exCard(k){
   const rest = def.rest ? `<button class="restbtn" data-rest="${def.rest}" data-name="${esc(def.name)}">Pauza ${Math.floor(def.rest/60)}:${String(def.rest%60).padStart(2,'0')}</button>` : '';
   const capNote = def.type === 'stage' && p.stage === def.stages.length - 1 && p.t >= def.max ? '<div class="sublabel">Strop vybavení. Drž a zpomal tempo.</div>' : '';
   return `<section class="card"><div class="card-h"><h2>${esc(def.name)}</h2>${def.tag ? `<span class="tag">${esc(def.tag)}</span>` : ''}</div>
-    <div class="row"><div class="rx">${load}${target}</div>${rest}</div>${bo}${prevLine}${sets}${rir}${rule}${painRow}${capNote}<div class="cue">${esc(def.cue)}</div></section>`;
+    <div class="row"><div class="rx">${load}${target}</div>${rest}</div>${bo}${prevLine}${sets}${rir}${rule}${painRow}${capNote}<div class="cue">${esc(def.cue)}</div>${def.extra ? `<div class="cue"><b>+ ${esc(def.extra)}</b></div>` : ''}</section>`;
 }
 
 /* ---------- Render: Tělo ---------- */
